@@ -1,0 +1,18 @@
+import SN_GS_ProductConfigUtil
+Rows=Product.GetContainerBySystemId('SN_Storage_cpq').Rows
+RowIndex=EventArgs.ChangedCell.RowIndex
+row=Rows[RowIndex]
+#Display validation Message based on Quantity
+SN_GS_ProductConfigUtil.quantityValidation(Product,row)
+
+columnName=EventArgs.ChangedCell.ColumnName
+newValue = EventArgs.ChangedCell.NewValue
+oldValue = EventArgs.ChangedCell.OldValue
+Row=Rows[RowIndex]
+#Row.Product.Attr(RowCoulumn).AssignValue(newValue)
+#Row.Product.ApplyRules()
+#Row.ApplyProductChanges()
+if columnName.lower() != 'select':
+	SN_GS_ProductConfigUtil.validateAndChangeQty(Product, Row, oldValue, newValue, columnName)
+elif columnName.lower() == 'select' and newValue == 'True':
+    SN_GS_ProductConfigUtil.checkAddOnIncompatibility(Product)
